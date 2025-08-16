@@ -1,0 +1,1 @@
+live-server --open=./index.html --port=8000

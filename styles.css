@@ -1,0 +1,128 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    background: #0f1218;
+    color: #e6edf3;
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
+}
+
+#game {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+}
+
+.hud {
+    position: fixed;
+    inset: 16px auto auto 16px;
+    z-index: 10;
+    background: rgba(10, 14, 20, .7);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-radius: 14px;
+    padding: 10px 12px;
+    font-size: 12px;
+    line-height: 1.4;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
+}
+
+.hud kbd {
+    background: #1b2230;
+    border: 1px solid #2a3446;
+    border-bottom-color: #1a2230;
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.corner {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    opacity: .7;
+    font-size: 12px;
+}
+
+a {
+    color: #7cc0ff;
+    text-decoration: none;
+}
+
+/* Pause / Settings Menu */
+.menu {
+    position: fixed;
+    inset: 0;
+    display: none;
+    z-index: 100;
+    background: rgba(5, 8, 12, 0.55);
+    backdrop-filter: blur(6px);
+}
+
+.menu.show {
+    display: grid;
+    place-items: center;
+}
+
+.menu-panel {
+    width: min(420px, 92vw);
+    background: rgba(16, 22, 30, 0.9);
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .35);
+}
+
+.menu-panel h2 {
+    margin: 0 0 12px;
+    font-size: 18px;
+}
+
+.menu-panel .row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.menu-panel label {
+    font-size: 13px;
+    opacity: .95;
+}
+
+.menu-panel input[type="range"] {
+    width: 100%;
+}
+
+.menu-panel .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.menu-panel button {
+    background: #22324a;
+    border: 1px solid #2a3a54;
+    color: #e6edf3;
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.menu-panel .hint {
+    display: block;
+    margin-top: 8px;
+    opacity: .7;
+    font-size: 12px;
+}
+
+/* optional nicer switch label */
+.switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
