@@ -101,7 +101,7 @@ export function getVolume() { return bgm ? bgm.volume : getAudioSettings().volum
  * @param {number} [minPitch=0.9] Minimum pitch multiplier
  * @param {number} [maxPitch=1.1] Maximum pitch multiplier
  */
-export function playRandomSfx(srcs, minPitch = 0.9, maxPitch = 1.1) {
+export function playRandomSfx(srcs, minPitch = 0.9, maxPitch = 1.1, volumeBoost = 1.0) {
     const settings = getAudioSettings();
     if (settings.muted || !srcs.length) return;
 
@@ -114,8 +114,10 @@ export function playRandomSfx(srcs, minPitch = 0.9, maxPitch = 1.1) {
         sfx.playbackRate = pitch;
 
         // Adjust volume to compensate for pitch change
-        const volumeCompensation = 1.0 - Math.abs(1.0 - pitch) * 0.3;
-        sfx.volume = settings.volume * volumeCompensation;
+        //const volumeCompensation = 1.0 - Math.abs(1.0 - pitch) * 0.3;
+        let volume = settings.volume * volumeBoost;
+        if (volume > 1) volume = 1; // Clamp to 1
+        sfx.volume = volume;
 
         sfx.play().catch(e => console.warn("SFX play failed:", e));
     } catch (e) {

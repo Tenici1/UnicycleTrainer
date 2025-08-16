@@ -31,6 +31,7 @@ export class Player extends Entity {
         this.height = 1.2;
         this.fallen = false;
 
+        this.fallReason = "";
         // Sprite properties
         this.spriteWidth = 64;   // Adjust based on your sprite dimensions
         this.spriteHeight = 124;  // Adjust based on your sprite dimensions
@@ -157,12 +158,15 @@ export class Player extends Entity {
         this.lean += this.leanVel * dt;
 
         const speedRisk = Math.max(0, Math.abs(this.speed) - this.maxStableSpeed) / (this.maxSpeed - this.maxStableSpeed);
-        if (Math.abs(this.lean) > this.leanMax || speedRisk > 0.05) this.fall();
+        if (Math.abs(this.lean) > this.leanMax || speedRisk > 0.05) {
+            this.fall('leaned_too_much');
+        }
     }
 
-    fall() {
+    fall(reason = "") {
         if (this.fallen) return;
         this.fallen = true;
+        this.fallReason = reason;
         this.speed = 0;
         this.angVel = 0;
         this.leanVel = 0;
@@ -170,11 +174,14 @@ export class Player extends Entity {
         window.dispatchEvent(new CustomEvent('screen:shake', { detail: 10 }));
 
         playRandomSfx([
+            'assets/terr.mp3'
+        ], 0.8, 2.0, 1.0)
+        playRandomSfx([
             'assets/trying.wav',
             'assets/trying2.wav',
             'assets/ggg.wav',
             'assets/no.wav'
-        ], 0.8, 2.0)
+        ], 0.8, 2.0, 3.0)
     }
 
     update(dt, scene) {

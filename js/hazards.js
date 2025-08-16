@@ -57,13 +57,13 @@ export class FloorHazard {
         return this.state === 'warning' ? this.warningIntensity : this.activeIntensity;
     }
 
-getColor() {
-    if (this.state === 'warning') {
-        return `rgba(255, 213, 79, ${this.warningIntensity})`; // Amber warning
-    } else {
-        return `rgba(239, 83, 80, ${this.activeIntensity})`; // Red danger
+    getColor() {
+        if (this.state === 'warning') {
+            return `rgba(255, 213, 79, ${this.warningIntensity})`; // Amber warning
+        } else {
+            return `rgba(239, 83, 80, ${this.activeIntensity})`; // Red danger
+        }
     }
-}
 }
 
 export class HazardSystem {
@@ -374,18 +374,7 @@ export class HazardSystem {
         const player = this.scene.player;
         let worldBounds = this.scene.worldBounds;
 
-        // Choose pattern based on difficulty (game time)
-        let availablePatterns = this.patternNames;
-
-        // Early game: simpler large patterns
-        if (this.gameTime < 15000) {
-            availablePatterns = ['horizontalStrip', 'verticalStrip', 'topBorder', 'bottomBorder', 'leftBorder', 'rightBorder'];
-        } else if (this.gameTime < 30000) {
-            availablePatterns = ['horizontalStrip', 'verticalStrip', 'megaCross', 'giantPlus', 'cornerQuadrant', 'topBorder', 'bottomBorder', 'leftBorder', 'rightBorder'];
-        } else if (this.gameTime < 60000) {
-            availablePatterns = ['horizontalStrip', 'verticalStrip', 'megaCross', 'giantPlus', 'giantX', 'diagonalSlash', 'diagonalBackslash', 'outerRing', 'innerRing', 'cornerQuadrant'];
-        }
-        // After 60s, all patterns including complex ones like checkerboard and spiral
+        let availablePatterns = ['horizontalStrip', 'verticalStrip', 'megaCross', 'giantPlus', 'giantX', 'diagonalSlash', 'diagonalBackslash', 'outerRing', 'innerRing', 'cornerQuadrant'];
 
         const patternName = availablePatterns[Math.floor(Math.random() * availablePatterns.length)];
         const pattern = this.patterns[patternName];
@@ -426,7 +415,7 @@ export class HazardSystem {
                 for (const tile of tiles) {
                     if (tile.x === playerTileX && tile.y === playerTileY) {
                         // Player hit an active hazard!
-                        player.fall();
+                        player.fall('stepped_on_hazard');
                         return;
                     }
                 }

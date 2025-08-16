@@ -2,6 +2,7 @@ import { Player } from './player.js';
 import { CFG } from './config.js';
 import { HazardSystem } from './hazards.js';
 import { FallingObjectSystem } from './falling-system.js';
+import { playRandomSfx } from './audio.js';
 
 // Scene management with hazard system
 export class Scene {
@@ -20,6 +21,11 @@ export class Scene {
 
     addScore(points) {
         this.score += points;
+
+        if(this.score === 30) {
+            playRandomSfx(['assets/triple.mp3'], 0.9, 1.1, 2.0);
+        }
+
         // You can also dispatch an event to update UI if needed
         window.dispatchEvent(new CustomEvent('score:update', { detail: this.score }));
     }

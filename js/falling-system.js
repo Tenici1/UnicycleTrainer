@@ -12,7 +12,7 @@ export class FallingObjectSystem {
         this.minSpawnInterval = 300;
         this.difficultyRamp = 0.995;
         this.gameTime = 0;
-        this.goodObjectProbability = 0.4;
+        this.goodObjectProbability = 0.5;
     }
 
     update(dt) {
@@ -77,7 +77,7 @@ export class FallingObjectSystem {
         const player = this.scene.player;
 
         for (const obj of this.objects) {
-            if (obj.pos.z > 0) continue; // Only check when near ground
+            if (obj.pos.z > 0.5 || obj.pos.z < -0.5) continue; // Only check when near ground
 
             const dx = obj.pos.x - player.pos.x;
             const dy = obj.pos.y - player.pos.y;
@@ -88,10 +88,10 @@ export class FallingObjectSystem {
                     // Good object: add points
                     this.scene.addScore(10);
                     // Play good sound
-                    playRandomSfx(['assets/exalt.wav'], 0.9, 1.1);
+                    playRandomSfx(['assets/exalt.wav'], 0.9, 1.1, 2.0);
                 } else {
                     // Bad object: make player fall
-                    player.fall();
+                    player.fall('hit_by_object');
                 }
 
                 // Remove the object

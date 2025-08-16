@@ -11,6 +11,14 @@ import { initMenu } from './ui.js';
 // Main game initialization and loop
 class Game {
     constructor() {
+        this.fallMessage = document.createElement('div');
+        this.fallMessage.className = 'fall-message';
+        document.body.appendChild(this.fallMessage);
+
+        this.scoreDisplay = document.createElement('div');
+        this.scoreDisplay.className = 'score-display';
+        document.body.appendChild(this.scoreDisplay);
+
         this.canvas = document.getElementById('game');
         this.g = this.canvas.getContext('2d');
         this.hud = document.getElementById('hud');
@@ -71,19 +79,39 @@ class Game {
     drawHUD() {
         const hazardStats = this.scene.getHazardStats();
         const playerFallen = this.scene.player.fallen;
+        this.scoreDisplay.textContent = `Score: ${this.scene.score}`;
+
+        if (this.scene.player.fallen) {
+            const reasons = {
+                'leaned_too_much': "You leaned too far bozo 🤡",
+                'stepped_on_hazard': "Zapped by a hazard ⚡",
+                'hit_by_object': "Hit by a good game, classic 💥"
+            };
+
+            this.fallMessage.innerHTML = `
+                <div class="crash-reason">${reasons[this.scene.player.fallReason] || "You crashed!"}</div>
+                <div>Press <kbd>R</kbd> to restart</div>
+            `;
+        } else {
+            this.fallMessage.innerHTML = '';
+        }
 
         this.hud.innerHTML = `
       <div><strong>Controls</strong></div>
       <div><kbd>WASD</kbd>/<kbd>↑↓←→</kbd> move · <kbd>Q</kbd>/<kbd>E</kbd> zoom</div>
       ${playerFallen ? '<div style="color:#ff6b6b;font-weight:bold;">💥 CRASHED! Press <kbd>R</kbd> to restart</div>' : ''}
+
+    `;
+    }
+/*
+Debug html:
       <div style="opacity:.8;margin-top:6px">
         Score: ${this.scene.score} · Time: ${hazardStats.gameTime}s · Active Hazards: ${hazardStats.activeHazards} · Spawn Rate: ${(hazardStats.spawnInterval / 1000).toFixed(1)}s
       </div>
       <div style="opacity:.8;">
         FPS ${this.fps.toFixed(0)} · Zoom ${this.camera.zoom.toFixed(2)} · Player (${this.scene.player.pos.x.toFixed(2)}, ${this.scene.player.pos.y.toFixed(2)})
       </div>
-    `;
-    }
+*/
 
     update(dt) {
         if (!this.paused && !this.scene.player.fallen) {
