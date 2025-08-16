@@ -84,8 +84,8 @@ class Game {
         if (this.scene.player.fallen) {
             const reasons = {
                 'leaned_too_much': "You leaned too far bozo 🤡",
-                'stepped_on_hazard': "Zapped by a hazard ⚡",
-                'hit_by_object': "Hit by a good game, classic 💥"
+                'stepped_on_hazard': "Avoid the obvious telegraphed hazards lil' gup 🙄",
+                'hit_by_object': "You need to avoid the good games <img src='assets/classic.gif' alt='facepalm' style='width:64px;height:64px;'>",
             };
 
             this.fallMessage.innerHTML = `

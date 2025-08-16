@@ -2,6 +2,7 @@
 import { getAudioSettings, updateAudioSettings } from './settings.js';
 
 let bgm;
+const activeSounds = new Set();
 
 const clamp01 = (v) => Math.max(0, Math.min(1, v));
 
@@ -100,27 +101,45 @@ export function getVolume() { return bgm ? bgm.volume : getAudioSettings().volum
  * @param {string[]} srcs Array of sound file paths
  * @param {number} [minPitch=0.9] Minimum pitch multiplier
  * @param {number} [maxPitch=1.1] Maximum pitch multiplier
+ * @param {number} [volumeBoost=1.0] Volume boost multiplier
+ * @param {boolean} [allowOverlap=true] Allow multiple instances of the same sound
  */
-export function playRandomSfx(srcs, minPitch = 0.9, maxPitch = 1.1, volumeBoost = 1.0) {
+export function playRandomSfx(srcs, minPitch = 0.9, maxPitch = 1.1, volumeBoost = 1.0, allowOverlap = true) {
     const settings = getAudioSettings();
     if (settings.muted || !srcs.length) return;
 
     try {
         const randomSrc = srcs[Math.floor(Math.random() * srcs.length)];
+
+        // Prevent overlapping if not allowed
+        if (!allowOverlap && activeSounds.has(randomSrc)) {
+            return;
+        }
+
         const sfx = new Audio(randomSrc);
+
+        // Track this sound
+        activeSounds.add(randomSrc);
+
+        // Clean up when sound finishes
+        sfx.onended = () => activeSounds.delete(randomSrc);
+        sfx.onerror = () => activeSounds.delete(randomSrc);
 
         // Calculate random pitch between min and max
         const pitch = Math.random() * (maxPitch - minPitch) + minPitch;
         sfx.playbackRate = pitch;
 
-        // Adjust volume to compensate for pitch change
-        //const volumeCompensation = 1.0 - Math.abs(1.0 - pitch) * 0.3;
+        // Volume adjustment
         let volume = settings.volume * volumeBoost;
-        if (volume > 1) volume = 1; // Clamp to 1
+        if (volume > 1) volume = 1;
         sfx.volume = volume;
 
-        sfx.play().catch(e => console.warn("SFX play failed:", e));
+        sfx.play().catch(e => {
+            console.warn("SFX play failed:", e);
+            activeSounds.delete(randomSrc);
+        });
     } catch (e) {
         console.error("Error playing SFX:", e);
+        activeSounds.delete(randomSrc);
     }
 }

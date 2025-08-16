@@ -73,6 +73,7 @@ export class Player extends Entity {
         } else if (Math.abs(normalizedLean) < 0.85) {
             fillColor = cfg.warningColor;
         } else {
+            playRandomSfx(["assets/noo.wav"], 0.7, 3, 1.0, false);
             fillColor = cfg.dangerColor;
         }
 
