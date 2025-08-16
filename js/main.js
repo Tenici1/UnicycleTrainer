@@ -83,8 +83,8 @@ class Game {
 
         if (this.scene.player.fallen) {
             const reasons = {
-                'leaned_too_much': "You leaned too far bozo 🤡",
-                'stepped_on_hazard': "Avoid the obvious telegraphed hazards lil' gup 🙄",
+                'leaned_too_much': "You leaned too far bozo <img src='assets/classic.gif' alt='facepalm' style='width:64px;height:64px;'>",
+                'stepped_on_hazard': "Avoid the obvious telegraphed hazards lil' gup <img src='assets/classic.gif' alt='facepalm' style='width:64px;height:64px;'>",
                 'hit_by_object': "You need to avoid the good games <img src='assets/classic.gif' alt='facepalm' style='width:64px;height:64px;'>",
                 'hit_by_npc': "Grant MacDonald got you <img src='assets/classic.gif' alt='facepalm' style='width:64px;height:64px;'>",
             };
