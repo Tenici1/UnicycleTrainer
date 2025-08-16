@@ -3,6 +3,7 @@ import { CFG } from './config.js';
 import { HazardSystem } from './hazards.js';
 import { FallingObjectSystem } from './falling-system.js';
 import { playRandomSfx } from './audio.js';
+import { NPC } from './npc.js';
 
 // Scene management with hazard system
 export class Scene {
@@ -14,6 +15,10 @@ export class Scene {
         this.debug = { grid: true, hitboxes: true };
         this.score = 0;
 
+        this.npcs = [];
+        this.npcSpawnTimer = 0;
+        this.npcSpawnInterval = 4000; // Spawn every 4 seconds
+
         this.hazardSystem = new HazardSystem(this);
         this.fallingSystem = new FallingObjectSystem(this);
     }
@@ -22,7 +27,7 @@ export class Scene {
     addScore(points) {
         this.score += points;
 
-        if(this.score === 30) {
+        if (this.score === 30) {
             playRandomSfx(['assets/triple.mp3'], 0.9, 1.1, 2.0);
         }
 
@@ -43,6 +48,17 @@ export class Scene {
             // Then by Z position (higher Z = further back)
             return b.pos.z - a.pos.z;
         });
+
+        // Update NPCs
+        this.npcs = this.npcs.filter(npc => npc.update(dt, this));
+        this.checkNPCCollisions();
+
+        // Spawn new NPCs
+        this.npcSpawnTimer += dt * 1000;
+        if (this.npcSpawnTimer >= this.npcSpawnInterval) {
+            this.spawnNPC();
+            this.npcSpawnTimer = 0;
+        }
     }
 
     reset() {
@@ -50,6 +66,8 @@ export class Scene {
         this.hazardSystem.reset();
         this.fallingSystem.reset();
         this.score = 0; // Reset score
+        this.npcs = [];
+        this.npcSpawnTimer = 0;
     }
 
     draw(g, cam, canvas) {
@@ -70,6 +88,69 @@ export class Scene {
         this.drawWallSegments(g, cam, canvas, 'near');
 
         if (!this.debug.hitboxes) this.drawHitboxes(g, cam, canvas);
+    }
+
+    spawnNPC() {
+        const bounds = this.worldBounds;
+        const player = this.player;
+
+        // Choose random edge (0=top, 1=right, 2=bottom, 3=left)
+        const edge = Math.floor(Math.random() * 4);
+        let startX, startY, targetX, targetY;
+
+        switch (edge) {
+            case 0: // Top edge
+                startX = Math.random() * bounds.w;
+                startY = -1;
+                targetX = Math.random() * bounds.w;
+                targetY = bounds.h + 1;
+                break;
+            case 1: // Right edge
+                startX = bounds.w + 1;
+                startY = Math.random() * bounds.h;
+                targetX = -1;
+                targetY = Math.random() * bounds.h;
+                break;
+            case 2: // Bottom edge
+                startX = Math.random() * bounds.w;
+                startY = bounds.h + 1;
+                targetX = Math.random() * bounds.w;
+                targetY = -1;
+                break;
+            case 3: // Left edge
+                startX = -1;
+                startY = Math.random() * bounds.h;
+                targetX = bounds.w + 1;
+                targetY = Math.random() * bounds.h;
+                break;
+        }
+
+        // Create NPC aimed towards player (with some randomness)
+        const npc = new NPC(
+            startX,
+            startY,
+            player.pos.x + (Math.random() - 0.5) * 5,
+            player.pos.y + (Math.random() - 0.5) * 5
+        );
+
+        this.npcs.push(npc);
+        this.entities.push(npc);
+    }
+
+    checkNPCCollisions() {
+        if (this.player.fallen) return;
+
+        for (const npc of this.npcs) {
+            const dx = npc.pos.x - this.player.pos.x;
+            const dy = npc.pos.y - this.player.pos.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < 0.8) {
+                this.player.fall('hit_by_npc');
+                playRandomSfx(['assets/crash.wav'], 0.9, 1.1, 1.0);
+                break;
+            }
+        }
     }
 
     drawWallSegments(g, cam, canvas, segment) {

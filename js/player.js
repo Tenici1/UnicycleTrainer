@@ -174,6 +174,13 @@ export class Player extends Entity {
 
         window.dispatchEvent(new CustomEvent('screen:shake', { detail: 10 }));
 
+        if (reason === 'hit_by_npc') {
+            playRandomSfx([
+                'assets/npc_crash1.wav',
+                'assets/npc_crash2.wav'
+            ], 0.8, 1.2, 1.0);
+        }
+
         playRandomSfx([
             'assets/terr.mp3'
         ], 0.8, 2.0, 1.0)

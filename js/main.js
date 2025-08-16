@@ -86,6 +86,7 @@ class Game {
                 'leaned_too_much': "You leaned too far bozo 🤡",
                 'stepped_on_hazard': "Avoid the obvious telegraphed hazards lil' gup 🙄",
                 'hit_by_object': "You need to avoid the good games <img src='assets/classic.gif' alt='facepalm' style='width:64px;height:64px;'>",
+                'hit_by_npc': "Grant MacDonald got you <img src='assets/classic.gif' alt='facepalm' style='width:64px;height:64px;'>",
             };
 
             this.fallMessage.innerHTML = `
@@ -103,15 +104,15 @@ class Game {
 
     `;
     }
-/*
-Debug html:
-      <div style="opacity:.8;margin-top:6px">
-        Score: ${this.scene.score} · Time: ${hazardStats.gameTime}s · Active Hazards: ${hazardStats.activeHazards} · Spawn Rate: ${(hazardStats.spawnInterval / 1000).toFixed(1)}s
-      </div>
-      <div style="opacity:.8;">
-        FPS ${this.fps.toFixed(0)} · Zoom ${this.camera.zoom.toFixed(2)} · Player (${this.scene.player.pos.x.toFixed(2)}, ${this.scene.player.pos.y.toFixed(2)})
-      </div>
-*/
+    /*
+    Debug html:
+          <div style="opacity:.8;margin-top:6px">
+            Score: ${this.scene.score} · Time: ${hazardStats.gameTime}s · Active Hazards: ${hazardStats.activeHazards} · Spawn Rate: ${(hazardStats.spawnInterval / 1000).toFixed(1)}s
+          </div>
+          <div style="opacity:.8;">
+            FPS ${this.fps.toFixed(0)} · Zoom ${this.camera.zoom.toFixed(2)} · Player (${this.scene.player.pos.x.toFixed(2)}, ${this.scene.player.pos.y.toFixed(2)})
+          </div>
+    */
 
     update(dt) {
         if (!this.paused && !this.scene.player.fallen) {

@@ -15,3 +15,6 @@ hicImg.src = "assets/hic.png";
 
 export const nierImg = new Image();
 nierImg.src = "assets/nier.png";
+
+export const gmImg = new Image();
+gmImg.src = "assets/gm.png";
