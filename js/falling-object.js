@@ -3,6 +3,7 @@ import { Entity } from './entity.js';
 import { U } from './utils.js';
 import { playRandomSfx } from './audio.js';
 import { CFG } from './config.js';
+import { exaltImg, hicImg, kcdImg, eldenImg, nierImg } from './assets-loader.js';
 
 // Falling hazard objects
 export class FallingObject extends Entity {
@@ -50,86 +51,89 @@ export class FallingObject extends Entity {
 
         // Draw different types of falling objects
         switch (this.objectType) {
-            case 0: // Bad - Ball (red)
-                g.beginPath();
-                g.arc(0, 0, size / 2, 0, Math.PI * 2);
-                g.fillStyle = '#FF5252';
-                g.fill();
-                g.strokeStyle = '#B71C1C';
-                g.lineWidth = 2;
-                g.stroke();
-                break;
+            case 0:
+                if (nierImg.complete && nierImg.naturalHeight !== 0) {
+                    const imgSize = size * 1; // Make it slightly larger
+                    const aspectRatio = nierImg.width / nierImg.height;
+                    const width = imgSize;
+                    const height = imgSize / aspectRatio;
 
-            case 1: // Bad - Box (red)
-                g.fillStyle = '#FF5252';
-                g.fillRect(-size / 2, -size / 2, size, size);
-                g.strokeStyle = '#B71C1C';
-                g.lineWidth = 2;
-                g.strokeRect(-size / 2, -size / 2, size, size);
-                break;
-
-            case 2: // Bad - Barrel (red)
-                g.beginPath();
-                g.ellipse(0, 0, size / 2, size / 3, 0, 0, Math.PI * 2);
-                g.fillStyle = '#FF5252';
-                g.fill();
-                g.strokeStyle = '#B71C1C';
-                g.lineWidth = 2;
-                g.stroke();
-
-                // Barrel bands
-                g.beginPath();
-                g.moveTo(-size / 2, -size / 6);
-                g.lineTo(size / 2, -size / 6);
-                g.moveTo(-size / 2, size / 6);
-                g.lineTo(size / 2, size / 6);
-                g.stroke();
-                break;
-
-            case 3: // Good - Star (yellow)
-                g.fillStyle = '#FFEB3B';
-                g.beginPath();
-                for (let i = 0; i < 5; i++) {
-                    const angle = (i * 0.4 * Math.PI) - Math.PI / 2;
-                    const radius = size / 2;
-                    const innerRadius = radius * 0.4;
-                    const x1 = Math.cos(angle) * radius;
-                    const y1 = Math.sin(angle) * radius;
-                    const x2 = Math.cos(angle + 0.2 * Math.PI) * innerRadius;
-                    const y2 = Math.sin(angle + 0.2 * Math.PI) * innerRadius;
-
-                    if (i === 0) g.moveTo(x1, y1);
-                    else g.lineTo(x1, y1);
-                    g.lineTo(x2, y2);
+                    g.drawImage(
+                        nierImg,
+                        -width / 2,
+                        -height / 2,
+                        width,
+                        height
+                    );
                 }
-                g.closePath();
-                g.fill();
-                g.strokeStyle = '#FF9800';
-                g.lineWidth = 1.5;
-                g.stroke();
                 break;
 
-            case 4: // Good - Heart (pink)
-                g.fillStyle = '#FFEB3B';
-                g.beginPath();
-                for (let i = 0; i < 5; i++) {
-                    const angle = (i * 0.4 * Math.PI) - Math.PI / 2;
-                    const radius = size / 2;
-                    const innerRadius = radius * 0.4;
-                    const x1 = Math.cos(angle) * radius;
-                    const y1 = Math.sin(angle) * radius;
-                    const x2 = Math.cos(angle + 0.2 * Math.PI) * innerRadius;
-                    const y2 = Math.sin(angle + 0.2 * Math.PI) * innerRadius;
+            case 1:
+                if (kcdImg.complete && kcdImg.naturalHeight !== 0) {
+                    const imgSize = size * 1; // Make it slightly larger
+                    const aspectRatio = kcdImg.width / kcdImg.height;
+                    const width = imgSize;
+                    const height = imgSize / aspectRatio;
 
-                    if (i === 0) g.moveTo(x1, y1);
-                    else g.lineTo(x1, y1);
-                    g.lineTo(x2, y2);
+                    g.drawImage(
+                        kcdImg,
+                        -width / 2,
+                        -height / 2,
+                        width,
+                        height
+                    );
                 }
-                g.closePath();
-                g.fill();
-                g.strokeStyle = '#FF9800';
-                g.lineWidth = 1.5;
-                g.stroke();
+                break;
+
+            case 2:
+                if (eldenImg.complete && eldenImg.naturalHeight !== 0) {
+                    const imgSize = size * 1; // Make it slightly larger
+                    const aspectRatio = eldenImg.width / eldenImg.height;
+                    const width = imgSize;
+                    const height = imgSize / aspectRatio;
+
+                    g.drawImage(
+                        eldenImg,
+                        -width / 2,
+                        -height / 2,
+                        width,
+                        height
+                    );
+                }
+                break;
+
+            case 3:
+                if (hicImg.complete && hicImg.naturalHeight !== 0) {
+                    const imgSize = size * 1; // Make it slightly larger
+                    const aspectRatio = hicImg.width / hicImg.height;
+                    const width = imgSize;
+                    const height = imgSize / aspectRatio;
+
+                    g.drawImage(
+                        hicImg,
+                        -width / 2,
+                        -height / 2,
+                        width,
+                        height
+                    );
+                }
+                break;
+
+            case 4:
+                if (exaltImg.complete && exaltImg.naturalHeight !== 0) {
+                    const imgSize = size * 1; // Make it slightly larger
+                    const aspectRatio = exaltImg.width / exaltImg.height;
+                    const width = imgSize;
+                    const height = imgSize / aspectRatio;
+
+                    g.drawImage(
+                        exaltImg,
+                        -width / 2,
+                        -height / 2,
+                        width,
+                        height
+                    );
+                }
                 break;
         }
 

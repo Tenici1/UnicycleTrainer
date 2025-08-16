@@ -4,10 +4,7 @@ import { Input } from './input.js';
 import { U } from './utils.js';
 import { CFG } from './config.js';
 import { playRandomSfx } from './audio.js';
-
-// Load the clown sprite
-const clownImg = new Image();
-clownImg.src = "assets/clown.png";
+import { clownImg } from './assets-loader.js';
 
 // Player entity with physics, controls, and sprite rendering
 export class Player extends Entity {

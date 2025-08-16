@@ -74,7 +74,7 @@ class Game {
 
         this.hud.innerHTML = `
       <div><strong>Controls</strong></div>
-      <div><kbd>WASD</kbd>/<kbd>↑↓←→</kbd> move · <kbd>Q</kbd>/<kbd>E</kbd> zoom · <kbd>G</kbd> grid · <kbd>H</kbd> hitboxes</div>
+      <div><kbd>WASD</kbd>/<kbd>↑↓←→</kbd> move · <kbd>Q</kbd>/<kbd>E</kbd> zoom</div>
       ${playerFallen ? '<div style="color:#ff6b6b;font-weight:bold;">💥 CRASHED! Press <kbd>R</kbd> to restart</div>' : ''}
       <div style="opacity:.8;margin-top:6px">
         Score: ${this.scene.score} · Time: ${hazardStats.gameTime}s · Active Hazards: ${hazardStats.activeHazards} · Spawn Rate: ${(hazardStats.spawnInterval / 1000).toFixed(1)}s

@@ -30,6 +30,13 @@ export class Scene {
 
         // Update falling objects system
         this.fallingSystem.update(dt);
+
+        this.entities.sort((a, b) => {
+            // Sort by Y position first
+            if (a.pos.y !== b.pos.y) return a.pos.y - b.pos.y;
+            // Then by Z position (higher Z = further back)
+            return b.pos.z - a.pos.z;
+        });
     }
 
     reset() {
