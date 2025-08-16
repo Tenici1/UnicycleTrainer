@@ -14,6 +14,8 @@ class Game {
         this.fallMessage = document.createElement('div');
         this.fallMessage.className = 'fall-message';
         document.body.appendChild(this.fallMessage);
+        this.showingStartScreen = true;
+        this.startScreenElement = this.createStartScreen();
 
         this.scoreDisplay = document.createElement('div');
         this.scoreDisplay.className = 'score-display';
@@ -27,7 +29,7 @@ class Game {
         this.fps = 60;
         this.last = U.now();
 
-        this.paused = false;
+        this.paused = true;
         this.gameOver = false;
         this.init();
     }
@@ -37,8 +39,33 @@ class Game {
         this.resize();
         this.setupEventListeners();
         this.start();
+
         initMusic("#bgm");
+        pauseMusic();
         this.menu = initMenu(this);
+
+        window.addEventListener('keydown', () => this.startGame(), { once: true });
+    }
+
+    createStartScreen() {
+        const screen = document.createElement('div');
+        screen.className = 'start-screen';
+        screen.innerHTML = `
+            <div class="start-content">
+                <p>Collect exalts and avoid bad games to score points</p>
+                <p><kbd>WASD</kbd> / <kbd>↑↓←→</kbd> </p>
+            </div>
+        `;
+        document.body.appendChild(screen);
+        return screen;
+    }
+
+    startGame() {
+        if (!this.showingStartScreen) return;
+        this.showingStartScreen = false;
+        this.startScreenElement.style.display = 'none';
+        this.paused = false;
+        resumeMusic();
     }
 
     resize() {
